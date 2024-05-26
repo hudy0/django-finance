@@ -4,7 +4,7 @@ from tracker.models import Transaction
 
 
 class TransactionFilter(FilterSet):
-    type = ChoiceFilter(
+    transaction_type = ChoiceFilter(
         choices=Transaction.TRANSACTION_TYPE_CHOICES,
         field_name="type",
         lookup_expr="iexact",
@@ -13,4 +13,4 @@ class TransactionFilter(FilterSet):
 
     class Meta:
         model = Transaction
-        fields = ["type"]
+        fields = ["transaction_type"]
