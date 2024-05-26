@@ -1,0 +1,12 @@
+[tool.pytest.ini_options]
+addopts = "--nomigrations --disable-socket"
+DJANGO_SETTINGS_MODULE = "project.testing_settings"
+filterwarnings = [
+    # Enable warnings as errors.
+    "error",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "path/to/file"]
+tests = ["B201", "B301"]
+skips = ["B101", "B601"]
