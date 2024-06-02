@@ -1,4 +1,3 @@
-import random
 from datetime import datetime
 
 import factory
@@ -43,7 +42,7 @@ class TransactionFactoryClass(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactoryClass)
     category = factory.SubFactory(CategoryFactoryClass)
-    amount = factory.Faker("10", amount=random.randint(0, 100))
+    amount = 5
     type = factory.Iterator([x[0] for x in Transaction.TRANSACTION_TYPE_CHOICES])
     date = factory.Faker(
         "date_between",
