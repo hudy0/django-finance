@@ -17,9 +17,7 @@ class TransactionsListView(LoginRequiredMixin, View):
     def get(request, *args, **kwargs):
         transaction_filter = TransactionFilter(
             request.GET,
-            queryset=Transaction.objects.filter(user=request.user).select_related(
-                "category"
-            ),
+            queryset=Transaction.objects.filter(user=request.user).select_related("category"),
         )
         total_income = transaction_filter.qs.get_total_income()
         total_expenses = transaction_filter.qs.get_total_expenses()
@@ -35,6 +33,4 @@ class TransactionsListView(LoginRequiredMixin, View):
                 template_name="tracker/transactions_container.html",
                 context=context,
             )
-        return render(
-            request, template_name="tracker/transactions_list.html", context=context
-        )
+        return render(request, template_name="tracker/transactions_list.html", context=context)

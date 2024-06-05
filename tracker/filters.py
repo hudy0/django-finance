@@ -1,4 +1,5 @@
-from django_filters import ChoiceFilter, FilterSet
+from django import forms
+from django_filters import ChoiceFilter, FilterSet, DateFilter
 
 from tracker.models import Transaction
 
@@ -10,7 +11,19 @@ class TransactionFilter(FilterSet):
         lookup_expr="iexact",
         empty_label="Any",
     )
+    start_date = DateFilter(
+        field_name="date",
+        lookup_expr="gte",
+        label="Start Date",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+    end_date = DateFilter(
+        field_name="date",
+        lookup_expr="lte",
+        label="End Date",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
 
     class Meta:
         model = Transaction
-        fields = ["transaction_type"]
+        fields = ["transaction_type", "start_date", "end_date"]

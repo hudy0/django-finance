@@ -71,6 +71,14 @@
                 {{ filter.form.transaction_type|add_label_class:"label text-white" }}
                 {% render_field filter.form.transaction_type class="select bg-gray-50 text-gray-900" %}
             </div>
+            <div class="mb-2 form-control">
+                {{ filter.form.start_date|add_label_class:"label text-white" }}
+                {% render_field filter.form.start_date class="input bg-gray-50 text-gray-900" %}
+            </div>
+            <div class="mb-2 form-control">
+                {{ filter.form.end_date|add_label_class:"label text-white" }}
+                {% render_field filter.form.end_date class="input bg-gray-50 text-gray-900" %}
+            </div>
             <button class="w-56 btn rounded-full btn-success text-base">
                 Filter
             </button>
