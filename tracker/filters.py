@@ -1,7 +1,12 @@
 from django import forms
-from django_filters import ChoiceFilter, FilterSet, DateFilter
+from django_filters import (
+    ChoiceFilter,
+    FilterSet,
+    DateFilter,
+    ModelMultipleChoiceFilter,
+)
 
-from tracker.models import Transaction
+from tracker.models import Category, Transaction
 
 
 class TransactionFilter(FilterSet):
@@ -23,7 +28,12 @@ class TransactionFilter(FilterSet):
         label="End Date",
         widget=forms.DateInput(attrs={"type": "date"}),
     )
+    category = ModelMultipleChoiceFilter(
+        queryset=Category.objects.all(),
+        widget=forms.CheckboxSelectMultiple(),
+        label="Category",
+    )
 
     class Meta:
         model = Transaction
-        fields = ["transaction_type", "start_date", "end_date"]
+        fields = ["transaction_type", "start_date", "end_date", "category"]

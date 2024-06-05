@@ -79,6 +79,9 @@
                 {{ filter.form.end_date|add_label_class:"label text-white" }}
                 {% render_field filter.form.end_date class="input bg-gray-50 text-gray-900" %}
             </div>
+            <div class="mb-2 form-control">
+                {% render_field filter.form.category class="text-green-500 border-gray-300 rounded focus:ring-green-500" %}
+            </div>
             <button class="w-56 btn rounded-full btn-success text-base">
                 Filter
             </button>
