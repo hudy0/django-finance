@@ -1,9 +1,13 @@
 from django import forms
-from tracker.models import Transaction, Category
+
+from tracker.models import Category, Transaction
 
 
 class CreateTransactionForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.RadioSelect())
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.RadioSelect(),
+    )
     # type = forms.ChoiceField(choices=Transaction.TRANSACTION_TYPE_CHOICES)
 
     class Meta:
