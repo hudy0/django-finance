@@ -62,30 +62,3 @@ def create_transaction(request):
 
     context = {"form": CreateTransactionForm()}
     return render(request, "tracker/transactions_create.html", context)
-
-
-# class TransactionsCreateView(LoginRequiredMixin, View):
-#     @staticmethod
-#     def get(request, *args, **kwargs):
-#         context = {"form": CreateTransactionForm()}
-#         return render(request, "tracker/transactions_create.html", context=context)
-#
-#     @staticmethod
-#     def post(request, *args, **kwargs):
-#         form = CreateTransactionForm(request.POST)
-#         if form.is_valid():
-#             transaction = form.save(commit=False)
-#             transaction.user = request.user
-#             transaction.save()
-#             context = {"message": "Transaction was added successfully!"}
-#             return render(
-#                 request,
-#                 template_name="tracker/transactions_create_success.html",
-#                 context=context,
-#             )
-#         else:
-#             context = {"form": form}
-#             response = render(request, "tracker/transactions_create.html", context)
-#             return retarget(response, "#transaction-block")
-# context = {"form": CreateTransactionForm()}
-# return render(request, "tracker/transactions_create.html", context=context)
