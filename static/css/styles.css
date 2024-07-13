@@ -1,10 +1,11 @@
 body {
-    background-image: linear-gradient(to right top, #344e75, #173f5b, #0a394b, #323d48, #065a60);
+    background-image: linear-gradient(to right top, #633f2c, #462a13, #191f63, #2d2d9a, #065a60);
     min-height: 100vh;
 }
 
 nav {
     color: white;
-    background-color: linear-gradient(to right top, #344e75, #173f5b, #0a394b, #323d48, #065a60);
-    /*background-color: #030303;*/
+    background-image: linear-gradient(to right top, #633f2c, #2f1c0d, #191f63, #2d2d9a, #065a60);
+
+    /*background-color: #122541;*/
 }
