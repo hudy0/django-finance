@@ -10,6 +10,12 @@ class CreateTransactionForm(forms.ModelForm):
     )
     # type = forms.ChoiceField(choices=Transaction.TRANSACTION_TYPE_CHOICES)
 
+    def clean_amount(self):
+        amount = self.cleaned_data["amount"]
+        if amount <= 0:
+            raise forms.ValidationError("Amount cannot be negative")
+        return amount
+
     class Meta:
         model = Transaction
         fields = ["category", "type", "amount", "date"]
