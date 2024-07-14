@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django_htmx.http import retarget
 
@@ -62,3 +62,22 @@ def create_transaction(request):
 
     context = {"form": CreateTransactionForm()}
     return render(request, "tracker/transactions_create.html", context)
+
+
+def update_transaction(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk)
+    if request.method == "POST":
+        form = CreateTransactionForm(request.POST, instance=transaction)
+        if form.is_valid():
+            transaction.save()
+            context = {"message": "Transaction was added successfully!"}
+            return render(request, "tracker/transactions_create_success.html", context)
+        else:
+            context = {"form": form, "transaction": transaction}
+            response = render(request, "tracker/transactions_update.html", context)
+            return retarget(response, "#transaction-block")
+    context = {
+        "form": CreateTransactionForm(instance=transaction),
+        "transaction": transaction,
+    }
+    return render(request, "tracker/transactions_update.html", context)
