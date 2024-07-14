@@ -19,3 +19,15 @@ def transactions():
 def user_transactions():
     user = UserFactoryClass()
     return TransactionFactoryClass.create_batch(20, user=user)
+
+
+@pytest.fixture()
+def transactions_dictionary_parameter():
+    user = UserFactoryClass()
+    transaction = TransactionFactoryClass.create(user=user)
+    return {
+        "type": transaction.type,
+        "category": transaction.category_id,
+        "date": transaction.date,
+        "amount": transaction.amount,
+    }

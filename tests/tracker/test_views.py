@@ -2,8 +2,9 @@ from datetime import datetime, timedelta
 
 import pytest
 from django.urls import reverse
+from pytest_django.asserts import assertTemplateUsed
 
-from tracker.models import Category
+from tracker.models import Category, Transaction
 
 
 @pytest.mark.django_db
@@ -76,3 +77,31 @@ def test_category_filter(user_transactions, client):
     qs = response.context["filter"].qs
     for transaction in qs:
         assert transaction.category.pk in _category_pk_
+
+
+@pytest.mark.django_db
+def test_add_transactions_requested(user_transactions, transactions_dictionary_parameter, client):
+    user = user_transactions[0].user
+    client.force_login(user)
+    user_transactions_count = Transaction.objects.filter(user=user).count()
+
+    headers = {"HTTP_HX-Request": "true"}
+    response = client.post(reverse("transactions_create"), transactions_dictionary_parameter, **headers)
+    assert Transaction.objects.filter(user=user).count() == user_transactions_count + 1
+    assertTemplateUsed(response, "tracker/transactions_create_success.html")
+
+
+@pytest.mark.django_db
+def test_cannot_add_transactions_with_negative_amount(user_transactions, transactions_dictionary_parameter, client):
+    user = user_transactions[0].user
+    client.force_login(user)
+    user_transactions_count = Transaction.objects.filter(user=user).count()
+
+    transactions_dictionary_parameter["amount"] = -30
+    response = client.post(
+        reverse("transactions_create"),
+        transactions_dictionary_parameter,
+    )
+    assert Transaction.objects.filter(user=user).count() == user_transactions_count
+    assertTemplateUsed(response, "tracker/transactions_create.html")
+    assert "HX-Retarget" in response.headers
