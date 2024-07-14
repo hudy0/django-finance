@@ -1,18 +1,22 @@
-{% load humanize %} {% load widget_tweaks %}
+{% load widget_tweaks %}
+{% load humanize %}
 
 <!-- Define Grid container div -->
-<div class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4" id="transaction-container">
+<div class="flex flex-col-reverse md:grid md:grid-cols-4 md:gap-4"
+     id="transaction-container">
     <!-- 3/4 cols for the table of transactions -->
     <div class="col-span-3">
-        <!-- Define table -->
         <div class="my-4">
-            <h1 class="mt-4 mb-4 prose prose-2xl text-white">Totals</h1>
+            <h1 class="mt-4 mb-4 prose prose-2xl text-white">
+                Totals
+            </h1>
+
             <table class="table">
                 <thead class="text-xs text-white uppercase">
                 <tr>
                     <th>Total Income</th>
                     <th>Total Expenses</th>
-                    <th>Balance</th>
+                    <th>Net Income</th>
                 </tr>
                 </thead>
 
@@ -20,21 +24,31 @@
                 <tr>
                     <td>${{ total_income|floatformat:2|intcomma }}</td>
                     <td>${{ total_expenses|floatformat:2|intcomma }}</td>
-                    <td>${{ balance|floatformat:2|intcomma }}</td>
+                    <td>${{ net_income|floatformat:2|intcomma }}</td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="flex justify-between items-center mt-4 mb-6">
-            <h1 class="mt-9 mb-4 prose prose-2xl text-white">Transactions</h1>
+            <h1 class="mt-8 mb-4 prose prose-2xl text-white">
+                Transactions
+            </h1>
             <a hx-get="{% url 'transactions_create' %}"
-               hx-push-url="true" hx-target="#transaction-block"
+               hx-push-url="true"
+               hx-target="#transaction-block"
                class="cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-10 h-10">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     fill="green"
+                     viewBox="0 0 24 24"
+                     stroke-width="1.5"
+                     stroke="currentColor"
+                     class="w-10 h-10">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z">
+                    </path>
                 </svg>
             </a>
         </div>
@@ -58,19 +72,18 @@
                         <td>{{ transaction.category }}</td>
                         <td>{{ transaction.type }}</td>
                         <td>{{ transaction.amount }}</td>
-                        <td>
+                        <td class="flex items-center">
                             <a hx-get="{% url 'transactions_update' transaction.pk %}"
                                hx-push-url="true"
-                               hx-target="#transaction-block">
-
-
+                               hx-target="#transaction-block"
+                               class="cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 24 24"
                                      fill="currentColor"
                                      class="size-6">
-                                    <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z">
-                                    </path>
+                                    <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z"></path>
                                 </svg>
+
                             </a>
                         </td>
                         <td>
@@ -88,31 +101,38 @@
                 {% endfor %}
                 </tbody>
             </table>
-
         {% else %}
-            <p class="text-2xl text-white">No transactions found</p>
+            <p class="text-2xl text-white">
+                No transactions found
+            </p>
         {% endif %}
     </div>
 
     <!-- 1/4 cols for the filter form -->
     <div class="col-span-1">
-        <form hx-get="{% url 'transactions_list' %}" hx-target="#transaction-container" hx-swap="outerHTML">
+        <form hx-get="{% url 'transactions_list' %}"
+              hx-target="#transaction-container"
+              hx-swap="outerHTML">
             <div class="mb-2 form-control">
                 {{ filter.form.transaction_type|add_label_class:"label text-white" }}
                 {% render_field filter.form.transaction_type class="select bg-gray-50 text-gray-900" %}
             </div>
+
             <div class="mb-2 form-control">
                 {{ filter.form.start_date|add_label_class:"label text-white" }}
                 {% render_field filter.form.start_date class="input bg-gray-50 text-gray-900" %}
             </div>
+
             <div class="mb-2 form-control">
                 {{ filter.form.end_date|add_label_class:"label text-white" }}
                 {% render_field filter.form.end_date class="input bg-gray-50 text-gray-900" %}
             </div>
-            <div class="mb-2 form-control">
+
+            <div class="mb-4 form-control">
                 {% render_field filter.form.category class="text-green-500 border-gray-300 rounded focus:ring-green-500" %}
             </div>
-            <button class="w-56 btn rounded-full btn-success text-base">
+
+            <button class="btn btn-success">
                 Filter
             </button>
         </form>

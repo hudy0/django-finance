@@ -12,7 +12,7 @@ from .models import Transaction
 class IndexView(View):
     @staticmethod
     def get(request, *args, **kwargs):
-        return render(request, "tracker/index.html")
+        return render(request, "index.html")
 
 
 class TransactionsListView(LoginRequiredMixin, View):

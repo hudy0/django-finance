@@ -1,18 +1,13 @@
-{% extends 'base.html' %}
-{% block content %}
-    {% load widget_tweaks %}
-    <h1 class="mt-9 mb-4 prose prose-2xl text-white">Create Transaction</h1>
+{% load widget_tweaks %}
+<h1 class="mt-9 mb-4 prose prose-2xl text-white">Create Transaction</h1>
 
-    <form hx-post="{% url 'transactions_create' %}">
-        {% include 'tracker/transactions_form.html' %}
-        <button class="btn btn-success">
-            Add
-        </button>
-        <button class="btn btn-error"
-                hx-get="{% url 'transactions_list' %}"
-                hx-target="#transaction-block"
-                hx-push-url='/transactions'>
-            Cancel
-        </button>
-    </form>
-{% endblock content %}
+<form hx-post="{% url 'transactions_create' %}">
+    {% include 'tracker/transactions_form.html' %}
+    <button class="btn btn-success">Add</button>
+    <button class="btn btn-error"
+            hx-get="{% url 'transactions_list' %}"
+            hx-target="#transaction-block"
+            hx-push-url='/transactions'>
+        Cancel
+    </button>
+</form>
