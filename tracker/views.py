@@ -64,8 +64,9 @@ def create_transaction(request):
     return render(request, "tracker/transactions_create.html", context)
 
 
+@login_required()
 def update_transaction(request, pk):
-    transaction = get_object_or_404(Transaction, pk=pk)
+    transaction = get_object_or_404(Transaction, pk=pk, user=request.user)
     if request.method == "POST":
         form = CreateTransactionForm(request.POST, instance=transaction)
         if form.is_valid():
