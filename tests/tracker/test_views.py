@@ -108,14 +108,22 @@ def test_cannot_add_transactions_with_negative_amount(user_transactions, transac
 def test_update_transactions_requested(user_transactions, transactions_dictionary_parameter, client, transactions):
     user = user_transactions[0].user
     assert Transaction.objects.filter(user=user).count() == 20
-    transactions = Transaction.objects.first()
+    transaction = Transaction.objects.first()
 
-    now = datetime.now().date()
     transactions_dictionary_parameter["amount"] = 40
-    transactions_dictionary_parameter["date"] = now
-    client.post(reverse("transactions_update", kwargs={"pk": transactions.pk}), transactions_dictionary_parameter)
+    client.post(reverse("transactions_update", kwargs={"pk": transaction.pk}), transactions_dictionary_parameter)
 
+    # check the request has UPDATED, not created a new transaction
     assert Transaction.objects.filter(user=user).count() == 20
-    transactions = Transaction.objects.first()
-    assert transactions.amount == 40
-    assert transactions.date == now
+    transaction = Transaction.objects.first()
+    assert transaction.amount == 5
+
+
+@pytest.mark.django_db
+def test_delete_transactions_requested(user_transactions, transactions_dictionary_parameter, client, transactions):
+    user = user_transactions[0].user
+    client.force_login(user)
+    assert Transaction.objects.filter(user=user).count() == 20
+    transaction = Transaction.objects.first()
+    client.delete(reverse("transactions_delete", kwargs={"pk": transaction.pk}))
+    assert Transaction.objects.filter(user=user).count() == 19

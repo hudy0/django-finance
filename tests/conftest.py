@@ -1,5 +1,3 @@
-import random
-
 import pytest
 
 from tests.factories import TransactionFactoryClass, UserFactoryClass
@@ -12,7 +10,7 @@ def aaa_db(db):
 
 @pytest.fixture()
 def transactions():
-    return TransactionFactoryClass.create_batch(10, amount=random.randint(0, 100))
+    return TransactionFactoryClass.create_batch(20)
 
 
 @pytest.fixture()
