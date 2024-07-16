@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from tracker.models import Category
+from django_finance.tracker.models import Category
 
 
 class CategoryModelTestCase(TestCase):

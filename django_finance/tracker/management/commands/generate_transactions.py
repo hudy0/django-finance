@@ -3,8 +3,8 @@ import random
 from django.core.management.base import BaseCommand
 from faker import Faker
 
-from accounts.models import User
-from tracker.models import Category, Transaction
+from django_finance.accounts.models import User
+from django_finance.tracker.models import Category, Transaction
 
 
 class Command(BaseCommand):
@@ -32,9 +32,7 @@ class Command(BaseCommand):
         # get the user
         user = User.objects.filter(username="hudaifa").first()
         if not user:
-            user = User.objects.create_superuser(
-                username="hudaifa", password="hudaifa1"
-            )
+            user = User.objects.create_superuser(username="hudaifa", password="hudaifa1")
 
         categories = Category.objects.all()
         types = [x[0] for x in Transaction.TRANSACTION_TYPE_CHOICES]

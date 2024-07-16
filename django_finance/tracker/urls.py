@@ -1,6 +1,12 @@
 from django.urls import path
 
-from tracker.views import IndexView, create_transaction, TransactionsListView, update_transaction, delete_transaction
+from django_finance.tracker.views import (
+    IndexView,
+    create_transaction,
+    TransactionsListView,
+    update_transaction,
+    delete_transaction,
+)
 
 urlpatterns: list = [
     path("", view=IndexView.as_view(), name="index"),

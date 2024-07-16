@@ -1,7 +1,7 @@
 from django.db import models
 
-from accounts.models import User
-from tracker.managers import TransactionQuerySetAPI
+from django_finance.accounts.models import User
+from django_finance.tracker.managers import TransactionQuerySetAPI
 
 
 class Category(models.Model):

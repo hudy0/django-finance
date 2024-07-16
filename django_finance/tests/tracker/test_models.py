@@ -1,6 +1,6 @@
 import pytest
 
-from tracker.models import Transaction
+from django_finance.tracker.models import Transaction
 
 
 @pytest.mark.django_db
@@ -20,14 +20,10 @@ def test_queryset_get_expense(transactions):
 @pytest.mark.django_db
 def test_queryset_get_total_income(transactions):
     total_income = Transaction.objects.get_total_income()
-    assert total_income == sum(
-        total.amount for total in transactions if total.type == "income"
-    )
+    assert total_income == sum(total.amount for total in transactions if total.type == "income")
 
 
 @pytest.mark.django_db
 def test_queryset_get_total_expenses(transactions):
     total_expenses = Transaction.objects.get_total_expenses()
-    assert total_expenses == sum(
-        expense.amount for expense in transactions if expense.type == "income"
-    )
+    assert total_expenses == sum(expense.amount for expense in transactions if expense.type == "income")

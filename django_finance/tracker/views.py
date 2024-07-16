@@ -5,7 +5,7 @@ from django.views import View
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import retarget
 
-from tracker.forms import CreateTransactionForm
+from django_finance.tracker.forms import CreateTransactionForm
 from .filters import TransactionFilter
 from .models import Transaction
 
@@ -13,7 +13,7 @@ from .models import Transaction
 class IndexView(View):
     @staticmethod
     def get(request, *args, **kwargs):
-        return render(request, "index.html")
+        return render(request, "../templates/index.html")
 
 
 class TransactionsListView(LoginRequiredMixin, View):

@@ -1,7 +1,7 @@
 import django_filters
 from django import forms
 
-from tracker.models import Category, Transaction
+from django_finance.tracker.models import Category, Transaction
 
 
 class TransactionFilter(django_filters.FilterSet):

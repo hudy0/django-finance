@@ -1,12 +1,28 @@
+[project]
+requires-python = ">=3.12"
+
+[tool.coverage.report]
+#fail_under = 100
+omit = [
+    "*/migrations/*",
+]
+show_missing = true
+skip_covered = true
+
+[tool.isort]
+profile = "black"
+src_paths = ["django_finance"]
+
+
+
 [tool.pytest.ini_options]
 addopts = "--nomigrations --disable-socket"
 DJANGO_SETTINGS_MODULE = "project.testing_settings"
 filterwarnings = [
-    # Enable warnings as errors.
     "error",
 ]
+testpaths = [
+    "django_finance",
+]
 
-[tool.bandit]
-exclude_dirs = ["tests", "path/to/file"]
-tests = ["B201", "B301"]
-skips = ["B101", "B601"]
+python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]

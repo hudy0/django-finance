@@ -1,6 +1,6 @@
 from django import forms
 
-from tracker.models import Category, Transaction
+from django_finance.tracker.models import Category, Transaction
 
 
 class CreateTransactionForm(forms.ModelForm):

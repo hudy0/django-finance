@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from pytest_django.asserts import assertTemplateUsed
 
-from tracker.models import Category, Transaction
+from django_finance.tracker.models import Category, Transaction
 
 
 @pytest.mark.django_db

@@ -2,8 +2,8 @@ from datetime import datetime
 
 import factory
 
-from accounts.models import User
-from tracker.models import Category, Transaction
+from django_finance.accounts.models import User
+from django_finance.tracker.models import Category, Transaction
 
 
 class UserFactoryClass(factory.django.DjangoModelFactory):

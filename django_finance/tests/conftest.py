@@ -1,6 +1,6 @@
 import pytest
 
-from tests.factories import TransactionFactoryClass, UserFactoryClass
+from django_finance.tests.factories import TransactionFactoryClass, UserFactoryClass
 
 
 @pytest.fixture(autouse=True)
