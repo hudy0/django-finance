@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import retarget
 
 from django_finance.tracker.forms import CreateTransactionForm
+
 from .filters import TransactionFilter
 from .models import Transaction
 

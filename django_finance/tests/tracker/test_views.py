@@ -80,38 +80,51 @@ def test_category_filter(user_transactions, client):
 
 
 @pytest.mark.django_db
-def test_add_transactions_requested(user_transactions, transactions_dictionary_parameter, client):
+def test_add_transactions_requested(
+    user_transactions, transactions_dictionary_parameter, client
+):
     user = user_transactions[0].user
     client.force_login(user)
     user_transactions_count = Transaction.objects.filter(user=user).count()
 
     headers = {"HTTP_HX-Request": "true"}
-    response = client.post(reverse("transactions_create"), transactions_dictionary_parameter, **headers)
+    response = client.post(
+        reverse("transactions_create"), transactions_dictionary_parameter, **headers
+    )
     assert Transaction.objects.filter(user=user).count() == user_transactions_count + 1
     assertTemplateUsed(response, "tracker/transactions_create_success.html")
 
 
 @pytest.mark.django_db
-def test_cannot_add_transactions_with_negative_amount(user_transactions, transactions_dictionary_parameter, client):
+def test_cannot_add_transactions_with_negative_amount(
+    user_transactions, transactions_dictionary_parameter, client
+):
     user = user_transactions[0].user
     client.force_login(user)
     user_transactions_count = Transaction.objects.filter(user=user).count()
 
     transactions_dictionary_parameter["amount"] = -30
-    response = client.post(reverse("transactions_create"), transactions_dictionary_parameter)
+    response = client.post(
+        reverse("transactions_create"), transactions_dictionary_parameter
+    )
     assert Transaction.objects.filter(user=user).count() == user_transactions_count
     assertTemplateUsed(response, "tracker/transactions_create.html")
     assert "HX-Retarget" in response.headers
 
 
 @pytest.mark.django_db
-def test_update_transactions_requested(user_transactions, transactions_dictionary_parameter, client, transactions):
+def test_update_transactions_requested(
+    user_transactions, transactions_dictionary_parameter, client, transactions
+):
     user = user_transactions[0].user
     assert Transaction.objects.filter(user=user).count() == 20
     transaction = Transaction.objects.first()
 
     transactions_dictionary_parameter["amount"] = 40
-    client.post(reverse("transactions_update", kwargs={"pk": transaction.pk}), transactions_dictionary_parameter)
+    client.post(
+        reverse("transactions_update", kwargs={"pk": transaction.pk}),
+        transactions_dictionary_parameter,
+    )
 
     # check the request has UPDATED, not created a new transaction
     assert Transaction.objects.filter(user=user).count() == 20
@@ -120,7 +133,9 @@ def test_update_transactions_requested(user_transactions, transactions_dictionar
 
 
 @pytest.mark.django_db
-def test_delete_transactions_requested(user_transactions, transactions_dictionary_parameter, client, transactions):
+def test_delete_transactions_requested(
+    user_transactions, transactions_dictionary_parameter, client, transactions
+):
     user = user_transactions[0].user
     client.force_login(user)
     assert Transaction.objects.filter(user=user).count() == 20

@@ -15,7 +15,9 @@ class UserModelTestCase(TestCase):
         """
         Test that a new User instance can be created.
         """
-        user = User.objects.create_user(username="testuser", email="testuser@example.com", password="testpassword")
+        user = User.objects.create_user(
+            username="testuser", email="testuser@example.com", password="testpassword"
+        )
         self.assertEqual(user.username, "testuser")
         self.assertEqual(user.email, "testuser@example.com")
         self.assertTrue(user.check_password("testpassword"))
