@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.decorators.http import require_http_methods
 from django_htmx.http import retarget
+from project import settings
 
 from django_finance.tracker.forms import CreateTransactionForm
 
@@ -17,34 +18,55 @@ class IndexView(View):
         return render(request, "../templates/index.html")
 
 
-class TransactionsListView(LoginRequiredMixin, View):
-    @staticmethod
-    def get(request, *args, **kwargs):
-        transaction_filter = TransactionFilter(
-            request.GET,
-            queryset=Transaction.objects.filter(user=request.user).select_related(
-                "category",
-            ),
-        )
-        total_income = transaction_filter.qs.get_total_income()
-        total_expenses = transaction_filter.qs.get_total_expenses()
-        context = {
-            "filter": transaction_filter,
-            "total_income": total_income,
-            "total_expenses": total_expenses,
-            "balance": total_income - total_expenses,  # net_income
-        }
-        if request.htmx:
-            return render(
-                request,
-                template_name="tracker/transactions_container.html",
-                context=context,
-            )
+@login_required()
+def get_transactions(request):
+    page = request.GET.get("page", 1)  # page=2
+    transaction_filter = TransactionFilter(
+        request.GET,
+        queryset=Transaction.objects.filter(user=request.user).select_related(
+            "category",
+        ),
+    )
+    paginator = Paginator(transaction_filter.qs, settings.PAGE_SIZE)
+    context = {
+        "transactions": paginator.page(page),
+    }
+    return render(
+        request, "tracker/transactions_container.html#transaction_list", context
+    )
+
+
+@login_required()
+def transactions_list(request):
+    transaction_filter = TransactionFilter(
+        request.GET,
+        queryset=Transaction.objects.filter(user=request.user).select_related(
+            "category",
+        ),
+    )
+
+    paginator = Paginator(transaction_filter.qs, settings.PAGE_SIZE)
+    transactions_page = paginator.page(1)
+    total_income = transaction_filter.qs.get_total_income()
+    total_expenses = transaction_filter.qs.get_total_expenses()
+    context = {
+        "transactions": transactions_page,
+        "filter": transaction_filter,
+        "total_income": total_income,
+        "total_expenses": total_expenses,
+        "balance": total_income - total_expenses,  # net_income
+    }
+    if request.htmx:
         return render(
             request,
-            template_name="tracker/transactions_list.html",
+            template_name="tracker/transactions_container.html",
             context=context,
         )
+    return render(
+        request,
+        template_name="tracker/transactions_list.html",
+        context=context,
+    )
 
 
 @login_required()
