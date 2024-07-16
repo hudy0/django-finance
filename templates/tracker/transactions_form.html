@@ -2,12 +2,12 @@
 
 <div class="mb-2 form-control text-black">
     {{ form.type|add_label_class:"label text-white" }}
-    {% render_field form.type class="input" %}
+    {% render_field form.type class="input text-white" %}
 </div>
 
 <div class="mb-2 form-control">
     {{ form.amount|add_label_class:"label text-white" }}
-    {% render_field form.amount class="input text-black" %}
+    {% render_field form.amount class="input text-white" %}
 
     {% for error in form.amount.errors %}
         <p class="text-red-400 mt-1">{{ error }}</p>
@@ -17,7 +17,7 @@
 
 <div class="mb-2 form-control">
     {{ form.date|add_label_class:"label text-white" }}
-    {% render_field form.date class="input text-black" %}
+    {% render_field form.date class="input text-white" %}
 </div>
 
 <div class="mb-2 form-control">
